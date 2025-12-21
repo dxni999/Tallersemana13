@@ -1,49 +1,50 @@
-#ifndef FUNCIONES_H
-#define FUNCIONES_H
+// Definir límites máximos
+#define MAX_CLIENTES 10
+#define MAX_VEHICULOS 10
+#define MAX_VENTAS 5
 
-#include <stdio.h>
+typedef struct{
+    char nombre[50];
+    int id;
+    int edad;
+}Cliente;
 
-#define MAX_VEHICULOS 1000
-#define MAX_VENTAS 2000
+typedef struct{
+    char marca[30];
+    char modelo[30];
+    char tipo[20]; // Camioneta, Sedan, SUV, etc.
+    int anio;
+    float precio;
+    int usado; // 1 = usado, 0 = nuevo
+    int disponible; // 1 = disponible, 0 = vendido
+}Vehiculo;
 
-#define ARCH_VEHICULOS "vehiculos.dat"
-#define ARCH_VENTAS "ventas.txt"
+typedef struct{
+    Cliente cliente;
+    Vehiculo vehiculo;
+    int id;
+}Venta;
 
-typedef struct {
-	int id;
-	char marca[30];
-	char modelo[30];
-	char tipo[20];      /* Ej: Camioneta, Sedan */
-	int anio;
-	float precio;
-	char estado[20];    /* "Disponible" / "Vendido" */
-} Vehiculo;
-
-typedef struct {
-	char nombreCliente[50];
-	int edad;
-	int idVehiculo;
-	float precioFinal;
-} Venta;
-
-/* Menú principal */
-void mostrarMenu(void);
-
-/* Vehículos */
-int registrarVehiculo(Vehiculo vehiculos[], int *cantidad);
-void mostrarTodosLosVehiculos(const Vehiculo vehiculos[], int cantidad);
-void buscarVehiculo(const Vehiculo vehiculos[], int cantidad);
-void mostrarVehiculosDisponibles(const Vehiculo vehiculos[], int cantidad);
-
-/* Ventas */
-int registrarVenta(Vehiculo vehiculos[], int cantidad, Venta ventas[], int *cantidadVentas);
-
-/* Persistencia */
-int guardarVehiculosEnArchivo(const Vehiculo vehiculos[], int cantidad);
-int cargarVehiculosDesdeArchivo(Vehiculo vehiculos[], int *cantidad);
-
-int guardarVentasEnArchivoTxt(const Venta ventas[], int cantidadVentas);
-int cargarVentasDesdeArchivoTxt(Venta ventas[], int *cantidadVentas);
-
-#endif
-
+// Funciones de entrada
+void leerCadena(char *cadena, int n);
+int leerEnteroConRango(int min, int max);
+float leerFlotanteConRango(float min, float max); 
+// Menú
+int menu();
+// Funciones de Cliente
+void registrarCliente();
+void listarClientes(Cliente *clientes);
+void guardarCliente(Cliente *cliente);
+int obtenerClientes(Cliente *clientes);
+// Funciones de Vehículo
+void registrarVehiculo();
+void listarVehiculos(Vehiculo *vehiculos);
+void guardarVehiculo(Vehiculo *vehiculo);
+int obtenerVehiculos(Vehiculo *vehiculos);
+void editarVehiculo();
+void buscarVehiculosPorPreferencias();
+// Funciones de Venta
+void realizarVenta(); 
+void listarVentas(Venta *ventas); 
+void guardarVenta(Venta *venta); 
+int obtenerVentas(Venta *ventas); 
