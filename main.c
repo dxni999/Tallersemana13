@@ -1,79 +1,59 @@
+#include <stdio.h>
 #include "funciones.h"
-#include <stdlib.h> /* strtol */
 
-int main(void) {
-	Vehiculo vehiculos[MAX_VEHICULOS];
-	Venta ventas[MAX_VENTAS];
-	int cantidadVehiculos = 0;
-	int cantidadVentas = 0;
-	int opcion;
+int main (int argc, char *argv[]) {
 
-	/* Cargar datos al inicio (si existen) */
-	(void)cargarVehiculosDesdeArchivo(vehiculos, &cantidadVehiculos);
-	(void)cargarVentasDesdeArchivoTxt(ventas, &cantidadVentas);
+    int opc1, opc2;
+    
+    do{
+        opc1 = menu();
 
-	for (;;) {
-		mostrarMenu();
-		opcion = 0;
+        switch (opc1)
+        {
+        case 1:
+            registrarCliente();
+            break;
+        case 2:{
+            Cliente clientes[MAX_CLIENTES]; 
+            listarClientes(clientes);
+            break;
+        }
+        case 3:
+            registrarVehiculo();
+            break;
+        case 4:{
+            Vehiculo vehiculos[MAX_VEHICULOS];  
+            listarVehiculos(vehiculos);
+            break;
+        }
+        case 5: 
+            editarVehiculo();
+            break;
+        case 6:
+            buscarVehiculosPorPreferencias();
+            break;
+        case 7: 
+            realizarVenta();
+            break;
+        case 8:{ 
+            Venta ventas[MAX_VENTAS];
+            listarVentas(ventas);
+            break;
+        }
+        case 9: 
+            printf("\nGracias por usar el sistema. Hasta pronto!\n");
+            return 0;
+        default:
+            printf("Opcion no valida\n"); 
+            break;
+        }
+        
+        printf("\nDesea seleccionar otra opcion? (1.-Si / 2.-No): ");
+        opc2 = leerEnteroConRango(1,2);
+        
+    }while(opc2 == 1);
+    
+    printf("\nGracias por usar el sistema. Hasta pronto!\n"); 
 
-		/* Lectura simple de opción (evita scanf para no dejar basura en stdin) */
-		{
-			char linea[64];
-			long val;
-			char *fin;
-			printf("Opcion: ");
-			if (fgets(linea, sizeof(linea), stdin) == NULL) continue;
-			val = strtol(linea, &fin, 10);
-			if (fin == linea) {
-				printf("Opcion invalida.\n");
-				continue;
-			}
-			opcion = (int)val;
-		}
-
-		switch (opcion) {
-			case 1:
-				(void)registrarVehiculo(vehiculos, &cantidadVehiculos);
-				break;
-
-			case 2:
-				mostrarTodosLosVehiculos(vehiculos, cantidadVehiculos);
-				break;
-
-			case 3:
-				buscarVehiculo(vehiculos, cantidadVehiculos);
-				break;
-
-			case 4:
-				mostrarVehiculosDisponibles(vehiculos, cantidadVehiculos);
-				break;
-
-			case 5:
-				(void)registrarVenta(vehiculos, cantidadVehiculos, ventas, &cantidadVentas);
-				break;
-
-			case 6:
-				(void)guardarVehiculosEnArchivo(vehiculos, cantidadVehiculos);
-				(void)guardarVentasEnArchivoTxt(ventas, cantidadVentas);
-				break;
-
-			case 7:
-				(void)cargarVehiculosDesdeArchivo(vehiculos, &cantidadVehiculos);
-				(void)cargarVentasDesdeArchivoTxt(ventas, &cantidadVentas);
-				printf("Datos cargados. Vehiculos: %d | Ventas: %d\n", cantidadVehiculos, cantidadVentas);
-				break;
-
-			case 0:
-				/* Guardar antes de salir */
-				(void)guardarVehiculosEnArchivo(vehiculos, cantidadVehiculos);
-				(void)guardarVentasEnArchivoTxt(ventas, cantidadVentas);
-				printf("Saliendo...\n");
-				return 0;
-
-			default:
-				printf("Opcion invalida.\n");
-				break;
-		}
-	}
+    return 0;
 }
-
